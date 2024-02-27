@@ -1,4 +1,4 @@
-import User from "../models/user.module.js";
+import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandle } from "../utils/error.js";
 import jwt from "jsonwebtoken";
@@ -49,7 +49,10 @@ export const signin = async (req, res, next) => {
     if (!validPassword) {
       return next(errorHandle(400, "Invalid Password"));
     }
-    const token = jwt.sign({ userid: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { userid: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET
+    );
     const { password: pass, ...rest } = user._doc;
     res
       .status(200)
@@ -81,7 +84,10 @@ export const google = async (req, res, next) => {
 
       user = await newUser.save();
     }
-    const token = jwt.sign({ userid: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { userid: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET
+    );
     const { password: pass, ...rest } = user._doc;
     res
       .status(200)
