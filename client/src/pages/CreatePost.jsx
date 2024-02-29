@@ -1,9 +1,11 @@
 import { Button, FileInput, Select, TextInput } from "flowbite-react";
-import React from "react";
+import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 function CreatePost() {
+  const [file, setFile] = useState(null);
+
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
@@ -24,7 +26,11 @@ function CreatePost() {
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-50 border-dotted p-3">
-          <FileInput typeof="file" accept="image/*" />
+          <FileInput
+            typeof="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
           <Button
             type="button"
             gradientDuoTone={"purpleToBlue"}
